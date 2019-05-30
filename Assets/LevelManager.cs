@@ -14,40 +14,87 @@ public class LevelManager : MonoBehaviour
     public GameObject targetPrefab;
 
     public Transform spawnPoint;
+    public Transform secondSpawnPoint;
+
+    public Canvas startCanvas;
 
     // Start is called before the first frame update
     void Start()
     {
         amoutTime = RemoteConfigManager.levelTime;
+        startCanvas.enabled = true;
+    }
+
+    public void startLevel()
+    {
+        StopAllCoroutines();
+        startCanvas.enabled = false;
         level = 1;
         currentLevelTime.text = level + " level time : " + amoutTime.ToString();
-
         StartCoroutine(levelManage());
     }
 
     IEnumerator levelManage()
     {
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 15; i++)
         {
-            Debug.LogError("level: " + level);
-            level++;
             yield return StartCoroutine(levelTime(amoutTime));
+            yield return StartCoroutine(manageRemaningTime());
+            level++;
         }
+    }
+
+    IEnumerator manageRemaningTime()
+    {
+        GameObject[] gameObjectsWithTag = GameObject.FindGameObjectsWithTag("target");
+        foreach (GameObject currentTarget in gameObjectsWithTag)
+        {
+            Destroy(currentTarget);
+        }
+
+        for (int i = 5; i > 0; i--)
+        {
+            currentLevelTime.text = "remaining time is : " + i;
+            yield return new WaitForSeconds(1);
+        }
+
+        yield break;
     }
 
     IEnumerator levelTime(int time)
     {
+        bool randomSpawn = true;
         int level_time = time;
-        currentLevelTime.text = "level time : " + level_time.ToString();
+        currentLevelTime.text = level + "level time : " + level_time.ToString();
         for (int i = 0; i < time; i++)
         {
             level_time--;
-            if (level_time % 2 == 0)
+            if (level_time % 4 == 0)
             {
-                spawnTarget();
+                if (randomSpawn)
+                {
+                    spawnTarget(secondSpawnPoint);
+                    randomSpawn = !randomSpawn;
+                }
+                else
+                {
+                    spawnTarget(spawnPoint);
+                }
+            }
+            else if (level_time % level - 15 == 0)
+            {
+                if (randomSpawn)
+                {
+                    spawnTarget(secondSpawnPoint);
+                    randomSpawn = !randomSpawn;
+                }
+                else
+                {
+                    spawnTarget(spawnPoint);
+                }
             }
 
-            currentLevelTime.text = "level time : " + level_time.ToString();
+            currentLevelTime.text = level + "level time : " + level_time.ToString();
             yield return new WaitForSeconds(1);
         }
 
@@ -55,8 +102,16 @@ public class LevelManager : MonoBehaviour
         yield break;
     }
 
-    void spawnTarget()
+    void spawnTarget(Transform spawnPoint)
     {
         GameObject clonedTarget = Instantiate(targetPrefab, spawnPoint.position, spawnPoint.rotation);
+        Target target = clonedTarget.GetComponent<Target>();
+        float improveTargetSpeed = 1 + level * 0.10f;
+        float improveTargetHealth = 1 + level * 0.2f;
+        float scaleTargetAccordingToHealth = level * 0.15f;
+        clonedTarget.transform.localScale += new Vector3(scaleTargetAccordingToHealth, scaleTargetAccordingToHealth,
+            scaleTargetAccordingToHealth);
+        target.speed = target.speed * improveTargetSpeed;
+        target.health = target.health * improveTargetHealth;
     }
 }

@@ -44,6 +44,8 @@ public class GeneralController : MonoBehaviour
 
     public Transform changePlace;
 
+    public Canvas startCanvas;
+
 
     void Start()
     {
@@ -119,6 +121,7 @@ public class GeneralController : MonoBehaviour
         aboutHealthStart();
         aboutBulletStart();
         aboutCoinStart();
+        startCanvas.enabled = true;
     }
 
     void handleMakeLivePlayer()
@@ -214,7 +217,7 @@ public class GeneralController : MonoBehaviour
 
     public void increaseBulletDamage(float amount = 5f)
     {
-        if (coin <= 50)
+        if (coin >= 50)
         {
             setCoin(-50);
             bulletDamage += amount;

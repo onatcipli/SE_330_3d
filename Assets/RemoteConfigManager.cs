@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class RemoteConfigManager : MonoBehaviour
 {
-    public int defaultLevelTime = 20;
+    public int defaultLevelTime = 30;
     public int defaultCoinStartAmount = 35;
     public float defaultPlayerHealthAmount = 150f;
 
