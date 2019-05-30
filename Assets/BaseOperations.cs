@@ -30,7 +30,7 @@ public class BaseOperations : MonoBehaviour
         getCoin();
     }
     
-    void healButtonFunc(int _itemCoin = 15)
+    public void healButtonFunc(int _itemCoin = 15)
     {
         if (canBuy(_itemCoin))
         {

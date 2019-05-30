@@ -15,6 +15,10 @@ public class GeneralController : MonoBehaviour
 
     public float lastShootTime;
 
+    public bool isGamePaused = false;
+
+    public Canvas killedPlayerCanvas;
+
     /*
     private float shootTimer = 0f;
     private bool didShoot = false;
@@ -44,6 +48,7 @@ public class GeneralController : MonoBehaviour
     void Start()
     {
         healthAmount = RemoteConfigManager.playerHealthAmount;
+        killedPlayerCanvas.enabled = false;
         aboutHealthStart();
         aboutBulletStart();
         aboutCoinStart();
@@ -53,7 +58,9 @@ public class GeneralController : MonoBehaviour
     {
         bulletText();
         coinText();
-
+        handePausePlay();
+        handleMakeLivePlayer();
+        handleKillPlayer();
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -95,6 +102,50 @@ public class GeneralController : MonoBehaviour
     {
         crossHandle();
         playerMovment();
+    }
+
+
+    public void handlePlayAgainButton()
+    {
+        transform.position = new Vector3(14, 1.25f, 5);
+        killedPlayerCanvas.enabled = false;
+        var gameObjects = GameObject.FindGameObjectsWithTag("target");
+        foreach (var currentTarget in gameObjects)
+        {
+            Destroy(currentTarget);
+        }
+
+        aboutHealthStart();
+    }
+
+    void handleMakeLivePlayer()
+    {
+        if (healthBar.fillAmount > 0)
+        {
+            isGamePaused = false;
+            killedPlayerCanvas.enabled = false;
+        }
+    }
+
+    void handleKillPlayer()
+    {
+        if (healthBar.fillAmount <= 0)
+        {
+            killedPlayerCanvas.enabled = true;
+            isGamePaused = true;
+        }
+    }
+
+    void handePausePlay()
+    {
+        if (isGamePaused)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
     }
 
     void lookAtTheMousePosition()

@@ -209,6 +209,9 @@ MonoBehaviour:
   currentHealth: 0
   bulletNumber: 0
   coin: 0
+  lastShootTime: 0
+  isGamePaused: 0
+  killedPlayerCanvas: {fileID: 0}
   healthBar: {fileID: 0}
   canvasNumberOfBulletTextRef: {fileID: 0}
   canvasCoinTextRef: {fileID: 0}
@@ -216,9 +219,13 @@ MonoBehaviour:
     type: 3}
   createPosition: {fileID: 7107021852466021194}
   _joystick: {fileID: 0}
+  _crossJoystick: {fileID: 0}
   speed: 5
   jumpHeight: 10
   snowFriction: 1.5
+  bulletPrefab: {fileID: 0}
+  bulletCross: {fileID: 0}
+  changePlace: {fileID: 0}
 --- !u!1 &7107021852466021195
 GameObject:
   m_ObjectHideFlags: 0
