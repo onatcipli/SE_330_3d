@@ -107,7 +107,7 @@ public class GeneralController : MonoBehaviour
 
     public void handlePlayAgainButton()
     {
-        transform.position = new Vector3(14, 1.25f, 5);
+        transform.position = new Vector3(14, 1.5f, 5);
         killedPlayerCanvas.enabled = false;
         var gameObjects = GameObject.FindGameObjectsWithTag("target");
         foreach (var currentTarget in gameObjects)
