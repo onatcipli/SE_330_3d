@@ -6,11 +6,14 @@ using UnityEngine.Experimental.UIElements;
 public class Target : MonoBehaviour
 {
     public float health = 50f;
-    
+
     public float speed = 3f;
+
+    private GeneralController generalController;
 
     private void Start()
     {
+        generalController = GameObject.FindWithTag("player").GetComponent<GeneralController>();
         // Destroy(gameObject, 5f);
     }
 
@@ -19,7 +22,7 @@ public class Target : MonoBehaviour
         moveAndRotateToTarget();
         if (health < 0)
         {
-            Destroy(gameObject);
+            DieObject();
         }
     }
 
@@ -27,7 +30,7 @@ public class Target : MonoBehaviour
     public void moveAndRotateToTarget()
     {
         Transform playerTransform = GameObject.FindWithTag("player").GetComponent<Transform>();
-        
+
         transform.rotation = Quaternion.Lerp(transform.rotation,
             Quaternion.LookRotation(playerTransform.position - transform.position),
             15 * Time.deltaTime
@@ -47,6 +50,9 @@ public class Target : MonoBehaviour
 
     private void DieObject()
     {
+        
+        generalController.setCoin(5);
+        Debug.Log("Current coin" + generalController.coin);
         Destroy(gameObject);
     }
 
@@ -54,7 +60,8 @@ public class Target : MonoBehaviour
     {
         if (other.collider.CompareTag("bullet"))
         {
-            health -= 10f;
+            Bullet bullet = other.gameObject.GetComponent<Bullet>();
+            health -= bullet.damage;
             Debug.Log("health :  " + health);
         }
     }

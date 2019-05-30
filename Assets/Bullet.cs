@@ -5,6 +5,8 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     // Start is called before the first frame update
+    public float damage = 10f;
+    
     void Start()
     {
         Destroy(gameObject, 1.5f);
@@ -14,6 +16,11 @@ public class Bullet : MonoBehaviour
     void Update()
     {
         
+    }
+    
+    public void setBulletDamage(float d = 5f)
+    {
+        damage = d;
     }
 
     private void OnCollisionEnter(Collision other)

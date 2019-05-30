@@ -115,7 +115,10 @@ public class GeneralController : MonoBehaviour
             Destroy(currentTarget);
         }
 
+        bulletDamage = 10f;
         aboutHealthStart();
+        aboutBulletStart();
+        aboutCoinStart();
     }
 
     void handleMakeLivePlayer()
@@ -197,6 +200,7 @@ public class GeneralController : MonoBehaviour
                 setBullet(-1);
                 Rigidbody bulletInstance;
                 bulletInstance = Instantiate(bulletPrefab, bulletCross.position, bulletCross.rotation) as Rigidbody;
+                bulletInstance.GetComponent<Bullet>().setBulletDamage(bulletDamage);
                 bulletInstance.AddForce(bulletCross.right * 1500);
             }
         }
@@ -205,6 +209,24 @@ public class GeneralController : MonoBehaviour
             Debug.Log("no bullet");
         }
     }
+
+    private float bulletDamage = 10f;
+
+    public void increaseBulletDamage(float amount = 5f)
+    {
+        if (coin <= 50)
+        {
+            setCoin(-50);
+            bulletDamage += amount;
+        }
+    }
+
+
+    void setBulletDamage(Bullet bullet)
+    {
+        bullet.setBulletDamage(bulletDamage);
+    }
+
 
     void aboutCoinStart()
     {
