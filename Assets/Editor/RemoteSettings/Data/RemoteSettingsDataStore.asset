@@ -16,9 +16,9 @@ MonoBehaviour:
   - key: playerHealthAmount
     value: 120.500000
     type: float
-  - key: levelTime
-    value: 15
-    type: int
   - key: coinStartAmount
     value: 50
+    type: int
+  - key: levelTime
+    value: 35
     type: int

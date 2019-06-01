@@ -73,7 +73,7 @@ public class BaseOperations : MonoBehaviour
     
     bool getHeal(float amount = 10f)
     {
-        if (FindObjectOfType<GeneralController>().currentHealth < 100f)
+        if (FindObjectOfType<GeneralController>().currentHealth < FindObjectOfType<GeneralController>().healthAmount)
         {
             FindObjectOfType<GeneralController>().setHealth(amount);
             return true;

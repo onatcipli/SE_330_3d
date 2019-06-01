@@ -47,6 +47,8 @@ public class GeneralController : MonoBehaviour
     public Canvas startCanvas;
 
 
+    public LevelManager levelManager;
+
     void Start()
     {
         healthAmount = RemoteConfigManager.playerHealthAmount;
@@ -122,6 +124,7 @@ public class GeneralController : MonoBehaviour
         aboutBulletStart();
         aboutCoinStart();
         startCanvas.enabled = true;
+        levelManager.StopAllCoroutines();
     }
 
     void handleMakeLivePlayer()

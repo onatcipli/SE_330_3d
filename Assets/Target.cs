@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.UIElements;
+using UnityEngine.UI;
 
 public class Target : MonoBehaviour
 {
@@ -15,15 +16,50 @@ public class Target : MonoBehaviour
     {
         generalController = GameObject.FindWithTag("player").GetComponent<GeneralController>();
         // Destroy(gameObject, 5f);
+
+//        InvokeRepeating("randomMovment", 0, 2f);
     }
 
     private void Update()
     {
-        moveAndRotateToTarget();
+        moveToPlayerWithRandomMovments();
         if (health < 0)
         {
             DieObject();
         }
+    }
+
+    private float lastRandomMoveTime;
+    
+    
+    void moveToPlayerWithRandomMovments()
+    {
+        float timeSinceLastMove = Time.time - lastRandomMoveTime;
+
+        if (timeSinceLastMove < 2)
+        {
+            Debug.Log("random movment !!!!!!");
+            randomMovment();
+            lastRandomMoveTime = Time.time;
+        }
+        else
+        {
+            moveAndRotateToTarget();
+        }
+    }
+
+    public void randomMovment()
+    {
+        Transform playerTransform = GameObject.FindWithTag("player").GetComponent<Transform>();
+
+        Vector3 randomPosition = new Vector3(Random.Range(-100.0f, 100.0f), playerTransform.position.y, playerTransform.position.z);
+
+        transform.rotation = Quaternion.Lerp(transform.rotation,
+            Quaternion.LookRotation(randomPosition - transform.position),
+            40 * Time.deltaTime
+        );
+
+        transform.position += transform.forward * 7f * Time.deltaTime;
     }
 
 
@@ -50,7 +86,6 @@ public class Target : MonoBehaviour
 
     private void DieObject()
     {
-        
         generalController.setCoin(5);
         Debug.Log("Current coin" + generalController.coin);
         Destroy(gameObject);
