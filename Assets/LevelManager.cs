@@ -18,11 +18,14 @@ public class LevelManager : MonoBehaviour
 
     public Canvas startCanvas;
 
+    public AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         amoutTime = RemoteConfigManager.levelTime;
         startCanvas.enabled = true;
+        audioSource.Stop();
     }
 
     public void startLevel()
@@ -46,6 +49,10 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator manageRemaningTime()
     {
+        if (audioSource.isPlaying)
+        {
+            audioSource.Stop();
+        }
         GameObject[] gameObjectsWithTag = GameObject.FindGameObjectsWithTag("target");
         foreach (GameObject currentTarget in gameObjectsWithTag)
         {
@@ -63,6 +70,11 @@ public class LevelManager : MonoBehaviour
 
     IEnumerator levelTime(int time)
     {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.Play();
+        }
+
         bool randomSpawn = true;
         int level_time = time;
         currentLevelTime.text = level + "level time : " + level_time.ToString();
